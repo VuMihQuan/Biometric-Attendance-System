@@ -180,7 +180,7 @@ uint8_t deleteModel(uint16_t PageID)
 	return rpacket.data[0];
 }
 
-void LIB_enrollFingerprint()
+uint8_t LIB_enrollFingerprint()
 {
 	setup_send("Ready to enroll ", "a fingerprint!");
 	setup_send("Please type in ", "the ID #(1-127)");
@@ -192,11 +192,136 @@ void LIB_enrollFingerprint()
 	uint8_t p = -1;
 	while(p != FINGERPRINT_OK)
 	{
-		p = getImg()
+		p = getImg();
 		switch(p){
-			case
+			case FINGERPRINT_OK:
+				setup_send("Image taken","");
+				break;
+			case FINGERPRINT_NOFINGER:
+				setup_send("...............","");
+				break;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("Communication", "     error");
+				break;
+			case FINGERPRINT_IMAGEFAIL:
+				setup_send("Imaging error","");
+				break;
+			default:
+				setup_send("Unknown error","");
+				break;
 		}
 	}
+		p = Img2Tz(1);
+		switch(p){
+			case FINGERPRINT_OK:
+				setup_send("Image converted","");
+				break;
+			case FINGERPRINT_IMAGEMESS:
+				setup_send("Image too messy","");
+				return p;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("Communication", "     error");
+				return p;
+			case FINGERPRINT_FEATUREFAIL:
+				setup_send("Could not find","finger features");
+				return p;
+			case FINGERPRINT_INVALIDIMAGE:
+				setup_send("Could not find","finger features");
+				return p;
+			default:
+				setup_send("Unknown error","");
+				return p;
+		}
+		setup_send("Remove finger","");
+		HAL_Delay(2000);
+		p = 0;
+		while(p != FINGERPRINT_NOFINGER)
+		{
+			p = getImg();
+		}
+		setup_send("ID ",str);
+		p = -1;
+		setup_send("Place same", "finger again");
+	while(p != FINGERPRINT_OK)
+	{
+		p = getImg();
+		switch(p){
+			case FINGERPRINT_OK:
+				setup_send("Image taken","");
+				break;
+			case FINGERPRINT_NOFINGER:
+				setup_send("...............","");
+				break;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("Communication", "     error");
+				break;
+			case FINGERPRINT_IMAGEFAIL:
+				setup_send("Imaging error","");
+				break;
+			default:
+				setup_send("Unknown error","");
+				break;
+		}
+	}
+		p = Img2Tz(1);
+		switch(p){
+			case FINGERPRINT_OK:
+				setup_send("Image converted","");
+				break;
+			case FINGERPRINT_IMAGEMESS:
+				setup_send("Image too messy","");
+				return p;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("Communication", "     error");
+				return p;
+			case FINGERPRINT_FEATUREFAIL:
+				setup_send("Could not find","finger features");
+				return p;
+			case FINGERPRINT_INVALIDIMAGE:
+				setup_send("Could not find","finger features");
+				return p;
+			default:
+				setup_send("Unknown error","");
+				return p;
+		}
+		char str1[10];
+		sprintf(str1, "for #%d", id);
+		setup_send("Creating model",str1);
+		
+		p = RegModel();
+		switch(p){
+			case FINGERPRINT_OK:
+				setup_send("Prints matched!","");
+				break;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("Communication", "     error");
+				return p;
+			case FINGERPRINT_ENROLLMISMATCH:
+				setup_send("Fingerprints","did not match");
+				return p;
+			default:
+				setup_send("Unknown error","");
+				return p;
+		}
+		p = StoreModel(1, id);
+		switch(p){
+			case FINGERPRINT_OK:
+				setup_send("Stored!","");
+				break;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("Communication", "     error");
+				return p;
+			case FINGERPRINT_BADLOCATION:
+				setup_send("Could not store","in that location");
+				return p;
+			case FINGERPRINT_FLASHERR:
+				setup_send("Error writing","to flash");
+				return p;
+			default:
+				setup_send("Unknown error","");
+				return p;
+		}
+	return true;
 	
 }
 int readnumber()
@@ -214,4 +339,84 @@ int readnumber()
 	return 0;
 }
 
-
+uint8_t LIB_checkFingerprint()
+{
+	uint8_t p = getImg();
+		switch(p){
+			case FINGERPRINT_OK:
+				setup_send("Image taken","");
+				break;
+			case FINGERPRINT_NOFINGER:
+				setup_send("No finger   ","detected");
+				return p;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("Communication", "     error");
+				return p;
+			case FINGERPRINT_IMAGEFAIL:
+				setup_send("Imaging error","");
+				return p;
+			default:
+				setup_send("Unknown error","");
+				return p;
+		}
+		p = Img2Tz(1);
+		switch(p){
+			case FINGERPRINT_OK:
+				setup_send("Image converted","");
+				break;
+			case FINGERPRINT_IMAGEMESS:
+				setup_send("Image too messy","");
+				return p;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("Communication", "     error");
+				return p;
+			case FINGERPRINT_FEATUREFAIL:
+				setup_send("Could not find","finger features");
+				return p;
+			case FINGERPRINT_INVALIDIMAGE:
+				setup_send("Could not find","finger features");
+				return p;
+			default:
+				setup_send("Unknown error","");
+				return p;
+		}
+		uint16_t pageID;
+		p = fingerprintSearch(1, &pageID);
+		switch(p){
+			case FINGERPRINT_OK:
+				setup_send("    Found a ","   print match!");
+				break;
+			case FINGERPRINT_PACKETRECIEVEERR:
+				setup_send("    Communication", "     error");
+				return p;
+			case FINGERPRINT_ENROLLMISMATCH:
+				setup_send("    Fingerprints","did not match");
+				return p;
+			default:
+				setup_send("Unknown error","");
+				return p;
+		}
+	  char str[10];
+		sprintf(str,"%d",pageID);
+		setup_send("Found ID #",str);
+		return pageID;
+}
+uint8_t LIB_deleteFingerprint(int id)
+{
+	setup_send("Please type ID","you want to dlt");
+	uint8_t p =-1;
+	p = deleteModel(id);
+	if(p == FINGERPRINT_OK)
+	{
+		setup_send("Deleted!","");
+	}else if(p == FINGERPRINT_PACKETRECIEVEERR){
+		setup_send("    Communication", "     error");
+	}else if(p == FINGERPRINT_BADLOCATION){
+		setup_send("Could not delete", "in that location");
+	}else if(p == FINGERPRINT_FLASHERR){
+		setup_send("Error writing", "to flash");
+	}else{
+		setup_send("Unknown error", "");
+	}
+	return p;
+}

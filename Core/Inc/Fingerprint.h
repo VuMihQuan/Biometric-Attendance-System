@@ -84,7 +84,7 @@ void sendPacket(Fingerprint_Packet packet);
 Fingerprint_Packet getPacket(Fingerprint_Packet spacket);
 uint8_t getImg();
 int readnumber();
-void LIB_enrollFingerprint();
+uint8_t LIB_enrollFingerprint();
 
 
 
