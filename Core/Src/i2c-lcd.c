@@ -82,7 +82,4 @@ void setup_send(char* str1, char* str2)
 	lcd_goto_XY(2,0);
 	lcd_send_string(str2);
 	HAL_Delay(2000);
-	lcd_clear_display();
-	HAL_Delay(100);
-	
 }

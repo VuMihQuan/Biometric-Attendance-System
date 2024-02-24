@@ -1,5 +1,6 @@
-biometric\ attendance\ system/main.o: ..\Core\Src\main.c \
-  ..\Core\Inc\main.h ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
+biometric\ attendance\ system/menu.o: ..\Core\Src\Menu.c \
+  ..\Core\Inc\Menu.h ..\Core\Inc\i2c-lcd.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h \
@@ -26,7 +27,4 @@ biometric\ attendance\ system/main.o: ..\Core\Src\main.c \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h \
-  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h \
-  ..\Core\Inc\i2c-lcd.h ..\Core\Inc\Fingerprint.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdio.h ..\Core\Inc\Menu.h
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h

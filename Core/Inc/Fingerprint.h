@@ -5,8 +5,8 @@
 //extern uint8_t value;
 extern 	uint8_t rdata[100];
 
-extern UART_HandleTypeDef huart2;
-#define UART_HANDLER huart2
+extern UART_HandleTypeDef huart3;
+#define UART_HANDLER huart3
 #define FINGERPRINT_OK 0x00               //!< Command execution is complete
 #define FINGERPRINT_PACKETRECIEVEERR 0x01 //!< Error when receiving data package
 #define FINGERPRINT_NOFINGER 0x02         //!< No finger on the sensor
@@ -78,15 +78,37 @@ typedef struct{
     uint16_t checksum;
 }Fingerprint_Packet;
 
-bool verifyPassword();
 Fingerprint_Packet StructurePacket(uint8_t *data, uint16_t length);
+
 void sendPacket(Fingerprint_Packet packet);
+
 Fingerprint_Packet getPacket(Fingerprint_Packet spacket);
+
+bool verifyPassword();
+
+void LIB_verifyPassword();
+
 uint8_t getImg();
+
+uint8_t Img2Tz(uint8_t slot);
+
+uint8_t RegModel();
+
+uint8_t StoreModel(uint8_t slot, uint16_t PageID);
+
+uint8_t LoadModel(uint8_t slot, uint16_t PageID);
+
+uint8_t fingerprintSearch(uint8_t slot, uint16_t* PageID);
+
+uint8_t deleteModel(uint16_t PageID);
+
 int readnumber();
+
+uint8_t LIB_checkFingerprint();
+
+uint8_t LIB_deleteFingerprint(int id);
+
 uint8_t LIB_enrollFingerprint();
-
-
 
 
 

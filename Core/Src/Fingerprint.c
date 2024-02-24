@@ -20,7 +20,7 @@ Fingerprint_Packet StructurePacket(uint8_t *data, uint16_t length)
 	
 	uint16_t sum = (length_packet >> 8) + (length_packet & 0xFF) + packet.type;
 	
-	for(int i=0; i<4; i++)
+	for(int i=0; i<length; i++)
 	{
 		packet.data[i] = data[0];
 		sum += *data;
@@ -182,12 +182,20 @@ uint8_t deleteModel(uint16_t PageID)
 
 uint8_t LIB_enrollFingerprint()
 {
+	lcd_clear_display();
+	HAL_Delay(100);
 	setup_send("Ready to enroll ", "a fingerprint!");
+	lcd_clear_display();
+	HAL_Delay(100);
 	setup_send("Please type in ", "the ID #(1-127)");
 	int id = readnumber();
 	char str[10];
 	sprintf(str, "%d", id);
+	lcd_clear_display();
+	HAL_Delay(100);
 	setup_send("Enrolling ID #",str);
+	lcd_clear_display();
+	HAL_Delay(100);
 	setup_send("Waiting finger", "to enroll as #");
 	uint8_t p = -1;
 	while(p != FINGERPRINT_OK)
@@ -195,18 +203,28 @@ uint8_t LIB_enrollFingerprint()
 		p = getImg();
 		switch(p){
 			case FINGERPRINT_OK:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Image taken","");
 				break;
 			case FINGERPRINT_NOFINGER:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("...............","");
 				break;
 			case FINGERPRINT_PACKETRECIEVEERR:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Communication", "     error");
 				break;
 			case FINGERPRINT_IMAGEFAIL:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Imaging error","");
 				break;
 			default:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Unknown error","");
 				break;
 		}
@@ -214,24 +232,38 @@ uint8_t LIB_enrollFingerprint()
 		p = Img2Tz(1);
 		switch(p){
 			case FINGERPRINT_OK:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Image converted","");
 				break;
 			case FINGERPRINT_IMAGEMESS:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Image too messy","");
 				return p;
 			case FINGERPRINT_PACKETRECIEVEERR:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Communication", "     error");
 				return p;
 			case FINGERPRINT_FEATUREFAIL:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Could not find","finger features");
 				return p;
 			case FINGERPRINT_INVALIDIMAGE:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Could not find","finger features");
 				return p;
 			default:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Unknown error","");
 				return p;
 		}
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("Remove finger","");
 		HAL_Delay(2000);
 		p = 0;
@@ -241,83 +273,127 @@ uint8_t LIB_enrollFingerprint()
 		}
 		setup_send("ID ",str);
 		p = -1;
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("Place same", "finger again");
 	while(p != FINGERPRINT_OK)
 	{
 		p = getImg();
 		switch(p){
 			case FINGERPRINT_OK:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Image taken","");
 				break;
 			case FINGERPRINT_NOFINGER:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("...............","");
 				break;
 			case FINGERPRINT_PACKETRECIEVEERR:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Communication", "     error");
 				break;
 			case FINGERPRINT_IMAGEFAIL:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Imaging error","");
 				break;
 			default:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Unknown error","");
 				break;
 		}
 	}
-		p = Img2Tz(1);
+		p = Img2Tz(2);
 		switch(p){
 			case FINGERPRINT_OK:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Image converted","");
 				break;
 			case FINGERPRINT_IMAGEMESS:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Image too messy","");
 				return p;
 			case FINGERPRINT_PACKETRECIEVEERR:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Communication", "     error");
 				return p;
 			case FINGERPRINT_FEATUREFAIL:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Could not find","finger features");
 				return p;
 			case FINGERPRINT_INVALIDIMAGE:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Could not find","finger features");
 				return p;
 			default:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Unknown error","");
 				return p;
 		}
 		char str1[10];
 		sprintf(str1, "for #%d", id);
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("Creating model",str1);
 		
 		p = RegModel();
 		switch(p){
 			case FINGERPRINT_OK:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Prints matched!","");
 				break;
 			case FINGERPRINT_PACKETRECIEVEERR:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Communication", "     error");
 				return p;
 			case FINGERPRINT_ENROLLMISMATCH:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Fingerprints","did not match");
 				return p;
 			default:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Unknown error","");
 				return p;
 		}
 		p = StoreModel(1, id);
 		switch(p){
 			case FINGERPRINT_OK:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Stored!","");
 				break;
 			case FINGERPRINT_PACKETRECIEVEERR:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Communication", "     error");
 				return p;
 			case FINGERPRINT_BADLOCATION:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Could not store","in that location");
 				return p;
 			case FINGERPRINT_FLASHERR:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Error writing","to flash");
 				return p;
 			default:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Unknown error","");
 				return p;
 		}
@@ -344,78 +420,102 @@ uint8_t LIB_checkFingerprint()
 	uint8_t p = getImg();
 		switch(p){
 			case FINGERPRINT_OK:
-				setup_send("Image taken","");
+//				setup_send("Image taken","");
+				HAL_Delay(50);
 				break;
 			case FINGERPRINT_NOFINGER:
-				setup_send("No finger   ","detected");
+//				setup_send("No finger   ","detected");
 				return p;
 			case FINGERPRINT_PACKETRECIEVEERR:
-				setup_send("Communication", "     error");
+//				setup_send("Communication", "     error");
 				return p;
 			case FINGERPRINT_IMAGEFAIL:
-				setup_send("Imaging error","");
+//				setup_send("Imaging error","");
 				return p;
 			default:
-				setup_send("Unknown error","");
+//				setup_send("Unknown error","");
 				return p;
 		}
 		p = Img2Tz(1);
 		switch(p){
 			case FINGERPRINT_OK:
-				setup_send("Image converted","");
+//				setup_send("Image converted","");
+				HAL_Delay(50);
 				break;
 			case FINGERPRINT_IMAGEMESS:
-				setup_send("Image too messy","");
+//				setup_send("Image too messy","");
 				return p;
 			case FINGERPRINT_PACKETRECIEVEERR:
-				setup_send("Communication", "     error");
+//				setup_send("Communication", "     error");
 				return p;
 			case FINGERPRINT_FEATUREFAIL:
-				setup_send("Could not find","finger features");
+//				setup_send("Could not find","finger features");
 				return p;
 			case FINGERPRINT_INVALIDIMAGE:
-				setup_send("Could not find","finger features");
+//				setup_send("Could not find","finger features");
 				return p;
 			default:
-				setup_send("Unknown error","");
+//				setup_send("Unknown error","");
 				return p;
 		}
 		uint16_t pageID;
 		p = fingerprintSearch(1, &pageID);
 		switch(p){
 			case FINGERPRINT_OK:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("    Found a ","   print match!");
 				break;
 			case FINGERPRINT_PACKETRECIEVEERR:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("    Communication", "     error");
 				return p;
 			case FINGERPRINT_ENROLLMISMATCH:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("    Fingerprints","did not match");
 				return p;
 			default:
+				lcd_clear_display();
+				HAL_Delay(100);
 				setup_send("Unknown error","");
 				return p;
 		}
 	  char str[10];
 		sprintf(str,"%d",pageID);
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("Found ID #",str);
 		return pageID;
 }
 uint8_t LIB_deleteFingerprint(int id)
 {
+	lcd_clear_display();
+	HAL_Delay(100);
 	setup_send("Please type ID","you want to dlt");
 	uint8_t p =-1;
 	p = deleteModel(id);
 	if(p == FINGERPRINT_OK)
 	{
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("Deleted!","");
 	}else if(p == FINGERPRINT_PACKETRECIEVEERR){
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("    Communication", "     error");
 	}else if(p == FINGERPRINT_BADLOCATION){
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("Could not delete", "in that location");
 	}else if(p == FINGERPRINT_FLASHERR){
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("Error writing", "to flash");
 	}else{
+		lcd_clear_display();
+		HAL_Delay(100);
 		setup_send("Unknown error", "");
 	}
 	return p;

@@ -2,6 +2,7 @@
 "biometric attendance system\startup_stm32f103xb.o"
 "biometric attendance system\fingerprint.o"
 "biometric attendance system\i2c-lcd.o"
+"biometric attendance system\menu.o"
 "biometric attendance system\main.o"
 "biometric attendance system\stm32f1xx_it.o"
 "biometric attendance system\stm32f1xx_hal_msp.o"

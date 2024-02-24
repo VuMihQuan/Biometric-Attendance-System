@@ -415,6 +415,16 @@
               <FilePath>..\Core\Inc\i2c-lcd.h</FilePath>
             </File>
             <File>
+              <FileName>Menu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\Inc\Menu.h</FilePath>
+            </File>
+            <File>
+              <FileName>Menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\Menu.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
